@@ -10,6 +10,7 @@ mod event_handler;
 mod io;
 mod text_renderer;
 mod word;
+mod syntax_highlight;
 
 #[macroquad::main("coded")]
 async fn main() {
