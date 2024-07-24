@@ -1,3 +1,4 @@
+use crate::io::save_to_file;
 use macroquad::prelude::*;
 
 pub fn handle_events(
@@ -5,6 +6,7 @@ pub fn handle_events(
     line_cursor_pos: &mut usize,
     line_index: &mut usize,
     text: &mut String,
+    file_name: &str,
 ) {
     let text_cp = text.clone();
     let lines: Vec<&str> = text_cp.lines().collect();
@@ -61,14 +63,15 @@ pub fn handle_events(
             KeyCode::Down => {
                 if *line_index < lines.len() - 1 {
                     *line_index += 1;
-                     if *line_cursor_pos > lines[*line_index].len() {
-                        *cursor_pos += lines[*line_index - 1].len() - *line_cursor_pos + lines[*line_index].len() + 1;
+                    if *line_cursor_pos > lines[*line_index].len() {
+                        *cursor_pos += lines[*line_index - 1].len() - *line_cursor_pos
+                            + lines[*line_index].len()
+                            + 1;
                         *line_cursor_pos = lines[*line_index].len();
                     } else {
                         *cursor_pos += lines[*line_index - 1].len() + 1;
                     }
                 }
-
             }
             KeyCode::Enter => {
                 let mut new_text = text[0..*cursor_pos].to_string();
@@ -80,6 +83,9 @@ pub fn handle_events(
                 *cursor_pos += 1;
                 *line_cursor_pos = 0;
                 *line_index += 1;
+            }
+            KeyCode::F2 => {
+                save_to_file(file_name, text).unwrap();
             }
             _ => {
                 // Handle character input
