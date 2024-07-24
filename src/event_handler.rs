@@ -47,6 +47,29 @@ pub fn handle_events(
                     }
                 }
             }
+            KeyCode::Up => {
+                if *line_index > 0 {
+                    *line_index -= 1;
+                    if *line_cursor_pos > lines[*line_index].len() {
+                        *cursor_pos -= *line_cursor_pos + 1;
+                        *line_cursor_pos = lines[*line_index].len();
+                    } else {
+                        *cursor_pos -= lines[*line_index].len() + 1;
+                    }
+                }
+            }
+            KeyCode::Down => {
+                if *line_index < lines.len() - 1 {
+                    *line_index += 1;
+                     if *line_cursor_pos > lines[*line_index].len() {
+                        *cursor_pos += lines[*line_index - 1].len() - *line_cursor_pos + lines[*line_index].len() + 1;
+                        *line_cursor_pos = lines[*line_index].len();
+                    } else {
+                        *cursor_pos += lines[*line_index - 1].len() + 1;
+                    }
+                }
+
+            }
             KeyCode::Enter => {
                 let mut new_text = text[0..*cursor_pos].to_string();
                 new_text.push('\n');
