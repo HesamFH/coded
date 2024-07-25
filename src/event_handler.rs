@@ -6,6 +6,7 @@ pub fn handle_events(
     line_cursor_pos: &mut usize,
     line_index: &mut usize,
     text: &mut String,
+    y_scroll: &mut f32,
     file_name: &str,
 ) {
     let text_cp = text.clone();
@@ -52,6 +53,13 @@ pub fn handle_events(
             KeyCode::Up => {
                 if *line_index > 0 {
                     *line_index -= 1;
+
+                    // Scroll
+                    if *y_scroll / 30.0 >= (*line_index + 1) as f32 {
+                        *y_scroll -= 30.0;
+                    }
+
+                    // Move cursors
                     if *line_cursor_pos > lines[*line_index].len() {
                         *cursor_pos -= *line_cursor_pos + 1;
                         *line_cursor_pos = lines[*line_index].len();
@@ -63,6 +71,13 @@ pub fn handle_events(
             KeyCode::Down => {
                 if *line_index < lines.len() - 1 {
                     *line_index += 1;
+
+                    // Scroll
+                    if (*y_scroll + screen_height()) / 30.0 <= (*line_index + 1) as f32 {
+                        *y_scroll += 30.0;
+                    }
+
+                    // Move cursors
                     if *line_cursor_pos > lines[*line_index].len() {
                         *cursor_pos += lines[*line_index - 1].len() - *line_cursor_pos
                             + lines[*line_index].len()
@@ -86,6 +101,17 @@ pub fn handle_events(
             }
             KeyCode::F2 => {
                 save_to_file(file_name, text).unwrap();
+            }
+            KeyCode::Tab => {
+                // I know this is not how tab works but whatever
+                let mut new_text = text[0..*cursor_pos].to_string();
+                new_text.push_str("    ");
+                new_text.push_str(&text[*cursor_pos..text.len()]);
+
+                *text = new_text;
+
+                *cursor_pos += 4;
+                *line_cursor_pos += 4;
             }
             _ => {
                 // Handle character input

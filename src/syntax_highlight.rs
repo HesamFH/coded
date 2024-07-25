@@ -1,14 +1,16 @@
-use std::collections::HashSet;
 use lazy_static::lazy_static;
+use std::collections::HashSet;
 
 lazy_static! {
-static ref definitions: HashSet<&'static str> =
-    HashSet::from(["def", "let", "var", "const", "fn", "func", "function", "return", "import", "include", "use"]);
-static ref conditions_and_loops: HashSet<&'static str> =
-    HashSet::from(["if", "else", "elif", "for", "while", "do", "loop", "==", "!=", ">", "<", ">=", "<="]);
-static ref datatypes: HashSet<&'static str> = HashSet::from([
-    "int", "float", "string", "str", "bool", "boolean", "uint", "void",
-]);
+    static ref definitions: HashSet<&'static str> = HashSet::from([
+        "def", "let", "var", "const", "fn", "func", "function", "return", "import", "include",
+        "use", "async", "await"
+    ]);
+    static ref conditions_and_loops: HashSet<&'static str> = HashSet::from([
+        "if", "else", "elif", "for", "while", "do", "loop", "==", "!=", ">", "<", ">=", "<="
+    ]);
+    static ref datatypes: HashSet<&'static str> =
+        HashSet::from(["int", "float", "string", "str", "bool", "boolean", "uint", "void",]);
 }
 
 pub enum WordType {

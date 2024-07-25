@@ -1,5 +1,5 @@
-use macroquad::prelude::*;
 use crate::syntax_highlight::*;
+use macroquad::prelude::*;
 
 pub struct Word<'a> {
     pub word: &'a str,
@@ -9,11 +9,15 @@ pub struct Word<'a> {
 
 impl<'a> Word<'a> {
     pub fn new(word: &'a str, coordinates: Vec2, word_type: WordType) -> Self {
-        Word { word, coordinates, word_type }
+        Word {
+            word,
+            coordinates,
+            word_type,
+        }
     }
 
-    pub fn from(text: &'a str, line_index: usize) -> Vec<Word> {
-        let y: f32 = line_index as f32 * 30.0 + 20.0;
+    pub fn from(text: &'a str, line_index: usize, y_scroll: &f32) -> Vec<Self> {
+        let y: f32 = line_index as f32 * 30.0 + 20.0 - y_scroll;
         let mut counter: usize = 0;
         let mut last_ws: usize = 0;
         let mut words: Vec<Word> = vec![];
@@ -22,7 +26,7 @@ impl<'a> Word<'a> {
                 let word_content = &text[last_ws..counter];
                 let word = Word::new(
                     word_content,
-                    vec2(last_ws as f32 * 13.15 + 20.0, y),
+                    vec2(last_ws as f32 * 13.15 + 60.0, y),
                     get_word_type(word_content),
                 );
                 last_ws = counter;
@@ -34,7 +38,7 @@ impl<'a> Word<'a> {
         let word_content = &text[last_ws..counter];
         let word = Word::new(
             word_content,
-            vec2(last_ws as f32 * 13.15 + 20.0, y),
+            vec2(last_ws as f32 * 13.15 + 60.0, y),
             get_word_type(word_content),
         );
         words.push(word);

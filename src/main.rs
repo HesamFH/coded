@@ -8,9 +8,16 @@ use text_renderer::render_text;
 mod cursor;
 mod event_handler;
 mod io;
+mod syntax_highlight;
 mod text_renderer;
 mod word;
-mod syntax_highlight;
+
+/*
+ * Some Variables:
+ * Character width ~ 13.15
+ * Lines left padding = 60
+ * Lines top padding = 0
+ * */
 
 #[macroquad::main("coded")]
 async fn main() {
@@ -30,6 +37,7 @@ async fn main() {
     // Cursor Pos in current line
     let mut line_cursor_pos = 0;
     let mut line_index = 0;
+    let mut y_scroll: f32 = 0.0;
     loop {
         clear_background(BLACK);
         handle_events(
@@ -37,10 +45,11 @@ async fn main() {
             &mut line_cursor_pos,
             &mut line_index,
             &mut text,
+            &mut y_scroll,
             &file_name,
         );
-        render_text(&mut text);
-        draw_cursor(&(line_cursor_pos as f32), &line_index);
+        render_text(&mut text, &y_scroll);
+        draw_cursor(&(line_cursor_pos as f32), &line_index, &y_scroll);
         // draw_text(&text, 20.0, 20.0, 30.0, WHITE);
         next_frame().await
     }
