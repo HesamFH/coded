@@ -38,6 +38,7 @@ async fn main() {
     let mut line_cursor_pos = 0;
     let mut line_index = 0;
     let mut y_scroll: f32 = 0.0;
+    let mut x_scroll: f32 = 0.0;
     loop {
         clear_background(BLACK);
         handle_events(
@@ -46,10 +47,11 @@ async fn main() {
             &mut line_index,
             &mut text,
             &mut y_scroll,
+            &mut x_scroll,
             &file_name,
         );
-        render_text(&mut text, &y_scroll);
-        draw_cursor(&(line_cursor_pos as f32), &line_index, &y_scroll);
+        render_text(&mut text, &y_scroll, &x_scroll);
+        draw_cursor(&(line_cursor_pos as f32), &line_index, &y_scroll, &x_scroll);
         // draw_text(&text, 20.0, 20.0, 30.0, WHITE);
         next_frame().await
     }
