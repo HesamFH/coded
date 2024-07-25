@@ -3,14 +3,32 @@ use std::collections::HashSet;
 
 lazy_static! {
     static ref definitions: HashSet<&'static str> = HashSet::from([
-        "def", "let", "var", "const", "fn", "func", "function", "return", "import", "include",
-        "use", "async", "await"
+        "def",
+        "let",
+        "var",
+        "const",
+        "fn",
+        "func",
+        "function",
+        "return",
+        "import",
+        "include",
+        "use",
+        "async",
+        "await",
+        "pub",
+        "public",
+        "private",
+        "protected",
+        "as",
     ]);
     static ref conditions_and_loops: HashSet<&'static str> = HashSet::from([
         "if", "else", "elif", "for", "while", "do", "loop", "==", "!=", ">", "<", ">=", "<="
     ]);
-    static ref datatypes: HashSet<&'static str> =
-        HashSet::from(["int", "float", "string", "str", "bool", "boolean", "uint", "void",]);
+    static ref datatypes: HashSet<&'static str> = HashSet::from([
+        "int", "float", "string", "str", "bool", "boolean", "uint", "void", "mod", "i8", "i16",
+        "i32", "i64", "u8", "u16", "u32", "u64", "f8", "f16", "f32", "f64"
+    ]);
 }
 
 pub enum WordType {

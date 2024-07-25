@@ -35,14 +35,15 @@ pub fn handle_events(
                         *y_scroll -= 30.0;
                     }
                     // Horizontal scroll
-                    if *x_scroll / 13.15 >= (*line_cursor_pos + 1) as f32 {
+                    // 13.14 because it has some problems with the float processing
+                    if *x_scroll / 13.14 >= (*line_cursor_pos + 1) as f32 {
                         *x_scroll -= 13.15;
                     }
                     if lines[*line_index].len() as f32 > (*x_scroll + screen_width() - 60.0) / 13.15
                     {
                         let current_last_char_pos =
                             (*x_scroll + screen_width() - 60.0) / 13.15 - 1.0;
-                        let diff = lines[*line_index].len() as f32 - current_last_char_pos;
+                        let diff = lines[*line_index].len() as f32 - current_last_char_pos + 1.0;
                         *x_scroll += diff * 13.15;
                     }
                 }
@@ -57,8 +58,8 @@ pub fn handle_events(
                     if lines[*line_index].len() as f32 > (*x_scroll + screen_width() - 60.0) / 13.15
                     {
                         let current_last_char_pos =
-                            (*x_scroll + screen_width() - 60.0) / 13.15 - 1.0;
-                        let diff = lines[*line_index].len() as f32 - current_last_char_pos;
+                            ((*x_scroll + screen_width() - 60.0) / 13.15 - 1.0).ceil();
+                        let diff = lines[*line_index].len() as f32 - current_last_char_pos + 1.0;
                         *x_scroll += diff * 13.15;
                     }
                     // Set the vertical scroll
@@ -71,7 +72,7 @@ pub fn handle_events(
                 *cursor_pos = cursor_pos.saturating_sub(1);
 
                 // Scroll
-                if *x_scroll / 13.15 >= (*line_cursor_pos + 1) as f32 {
+                if *x_scroll / 13.14 >= (*line_cursor_pos + 1) as f32 {
                     *x_scroll -= 13.15;
                 }
             }
