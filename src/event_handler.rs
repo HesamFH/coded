@@ -160,13 +160,7 @@ pub fn handle_events(
                 *cursor_pos += 1;
                 *line_cursor_pos = 0;
                 *line_index += 1;
-
-                // Set the horizontal scroll
-                if *x_scroll / 13.15 > lines[*line_index].len() as f32 {
-                    let current_first_char_pos = *x_scroll / 13.15;
-                    let diff = current_first_char_pos - lines[*line_index].len() as f32;
-                    *x_scroll -= diff * 13.15;
-                }
+                *x_scroll = 0.0;
 
                 // Set the vertica Scroll
                 if (*y_scroll + screen_height()) / 30.0 <= (*line_index + 1) as f32 {
