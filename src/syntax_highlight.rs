@@ -35,18 +35,23 @@ pub enum WordType {
     Definition,
     Condition,
     Datatype,
+    String,
     Default,
 }
 
-pub fn get_word_type(word: &str) -> WordType {
-    let word_trimmed: &str = &word.trim().to_lowercase();
-    if definitions.contains(&word_trimmed) {
-        WordType::Definition
-    } else if conditions_and_loops.contains(&word_trimmed) {
-        WordType::Condition
-    } else if datatypes.contains(&word_trimmed) {
-        WordType::Datatype
+pub fn get_word_type(word: &str, is_string: &bool) -> WordType {
+    if *is_string {
+        WordType::String
     } else {
-        WordType::Default
+        let word_trimmed: &str = &word.trim().to_lowercase();
+        if definitions.contains(&word_trimmed) {
+            WordType::Definition
+        } else if conditions_and_loops.contains(&word_trimmed) {
+            WordType::Condition
+        } else if datatypes.contains(&word_trimmed) {
+            WordType::Datatype
+        } else {
+            WordType::Default
+        }
     }
 }

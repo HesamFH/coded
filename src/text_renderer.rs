@@ -32,7 +32,6 @@ pub fn render_text(text: &mut str, y_scroll: &f32, x_scroll: &f32) {
         let y = i as f32 * 30.0 + 20.0 - *y_scroll;
         draw_text(&(i + 1).to_string(), 0.0, y, 30.0, DARKGRAY);
     }
-
 }
 
 pub fn get_word_color(word: &Word) -> Color {
@@ -41,5 +40,6 @@ pub fn get_word_color(word: &Word) -> Color {
         WordType::Condition => YELLOW,
         WordType::Datatype => SKYBLUE,
         WordType::Default => WHITE,
+        WordType::String => GREEN,
     }
 }
