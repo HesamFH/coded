@@ -182,6 +182,73 @@ pub fn handle_events(
                 *cursor_pos += 4;
                 *line_cursor_pos += 4;
             }
+            KeyCode::Home => {
+                *cursor_pos -= *line_cursor_pos;
+                *line_cursor_pos = 0;
+                *x_scroll = 0.0;
+            }
+            KeyCode::End => {
+                let curr_line_len = lines[*line_index].len();
+                *cursor_pos += (curr_line_len - *line_cursor_pos) as usize;
+                *line_cursor_pos = curr_line_len;
+                // Set the horizontal scroll
+                if curr_line_len as f32 > (*x_scroll + screen_width() - 60.0) / 13.15 {
+                    let current_last_char_pos =
+                        ((*x_scroll + screen_width() - 60.0) / 13.15 - 1.0).ceil();
+                    let diff = curr_line_len as f32 - current_last_char_pos + 1.0;
+                    *x_scroll += diff * 13.15;
+                }
+            }
+            KeyCode::PageDown => {
+                let page_lines = (screen_height() / 30.0).floor();
+                let prev_line_index = *line_index;
+                if *line_index as f32 + page_lines >= lines.len() as f32 {
+                    *line_index = lines.len() - 1;
+                } else {
+                    *line_index += page_lines as usize;
+                }
+
+                // Set the vertical scroll
+                let current_first_line = *y_scroll / 30.0;
+                let diff = *line_index as f32 - current_first_line;
+                *y_scroll += diff * 30.0;
+
+                // Set the cursor pos
+                for i in prev_line_index..*line_index {
+                    *cursor_pos += lines[i].len() + 1;
+                }
+                *cursor_pos -= *line_cursor_pos;
+
+                // Set the horizontal scroll
+                *x_scroll = 0.0;
+
+                *line_cursor_pos = 0;
+            }
+            KeyCode::PageUp => {
+                let page_lines = (screen_height() / 30.0).floor();
+                let prev_line_index = *line_index;
+                if *line_index as f32 - page_lines < 0.0 {
+                    *line_index = 0;
+                } else {
+                    *line_index -= page_lines as usize;
+                }
+
+                // Set the vertical scroll
+                let current_first_line = *y_scroll / 30.0;
+                let diff = current_first_line - *line_index as f32;
+                *y_scroll -= diff * 30.0;
+
+                // Set the cursor pos
+                for i in *line_index..prev_line_index as usize {
+                    *cursor_pos -= lines[i].len() + 1;
+                }
+                *cursor_pos -= *line_cursor_pos;
+
+                // Set the horizontal scroll
+                *x_scroll = 0.0;
+
+                *line_cursor_pos = 0;
+            }
             _ => {
                 // Handle character input
                 let typed_char = get_char_pressed();
@@ -195,6 +262,13 @@ pub fn handle_events(
 
                         *cursor_pos += 1;
                         *line_cursor_pos += 1;
+
+                        // Scroll
+                        if (*x_scroll + screen_width() - 60.0) / 13.15
+                            <= (*line_cursor_pos + 1) as f32
+                        {
+                            *x_scroll += 13.15;
+                        }
                     }
                 }
             }
