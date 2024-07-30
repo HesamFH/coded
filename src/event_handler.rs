@@ -17,6 +17,7 @@ pub fn handle_events(
         match k {
             KeyCode::Backspace => {
                 if *cursor_pos > 0 {
+                    let li_copy = *line_index;
                     let mut new_text = text[0..*cursor_pos - 1].to_string();
                     new_text.push_str(&text[*cursor_pos..text.len()]);
 
@@ -40,6 +41,7 @@ pub fn handle_events(
                         *x_scroll -= 13.15;
                     }
                     if lines[*line_index].len() as f32 > (*x_scroll + screen_width() - 60.0) / 13.15
+                        && li_copy != *line_index
                     {
                         let current_last_char_pos =
                             (*x_scroll + screen_width() - 60.0) / 13.15 - 1.0;
