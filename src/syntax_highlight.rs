@@ -23,7 +23,7 @@ lazy_static! {
         "as",
     ]);
     static ref conditions_and_loops: HashSet<&'static str> = HashSet::from([
-        "if", "else", "elif", "for", "while", "do", "loop", "==", "!=", ">", "<", ">=", "<="
+        "if", "else", "elif", "for", "while", "do", "loop","then", "fi", "==", "!=", ">", "<", ">=", "<="
     ]);
     static ref datatypes: HashSet<&'static str> = HashSet::from([
         "int", "float", "string", "str", "bool", "boolean", "uint", "void", "mod", "i8", "i16",
